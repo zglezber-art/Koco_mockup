@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOCO Self-Expression Index</title>
+    <style>
+        /* CSS STYLING */
+        :root {
+            --color-hot-pink: #BF4079;
+            --color-baby-blue: #A0C4FF;
+            --color-yellow: #FFD700;
+            --color-neutral-bg: #f9f9f9;
+            --color-text: #333;
+            --base-price: 185.00;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--color-neutral-bg);
+            color: var(--color-text);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            display: flex;
+            gap: 40px;
+        }
+
+        /* Layout */
+        .garment-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 300px;
+            padding: 20px;
+            border-right: 1px solid var(--color-baby-blue);
+            position: relative; 
+        }
+
+        .config-area {
+            flex: 1;
+        }
+
+        h1 {
+            color: var(--color-hot-pink);
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--color-baby-blue);
+            padding-bottom: 10px;
+        }
+
+        /* Step Styling */
+        .step-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        
+        .step-header {
+            font-size: 1.3em;
+            color: var(--color-text);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .step-header span {
+            font-weight: bold;
+            color: var(--color-hot-pink);
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        /* Button Styling */
+        .button-group button {
+            background-color: white;
+            color: var(--color-hot-pink);
+            border: 2px solid var(--color-baby-blue);
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .button-group button:hover {
+            background-color: var(--color-hot-pink);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .button-group button.selected {
+            background-color: var(--color-hot-pink);
+            color: white;
+            border-color: var(--color-hot-pink);
+            box-shadow: 0 0 10px rgba(191, 64, 121, 0.5);
+        }
+
+        .progression-button {
+            background-color: var(--color-hot-pink);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin-top: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s, opacity 0.2s;
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        .progression-button:disabled {
+            background-color: #ccc;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Final Display */
+        .final-summary {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--color-baby-blue);
+            border-radius: 8px;
+            color: var(--color-text);
+        }
+
+        .final-price-display {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--color-hot-pink);
+            margin: 10px 0;
+        }
+        
+        /* Step 4 & 5 Styles */
+        #step-4 .final-garment-display, #step-5 .order-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #fcfcfc;
+        }
+        #step-4 .final-garment-display svg {
+            border: 1px dashed var(--color-baby-blue);
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background-color: #f5f5f5;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        #step-4 .final-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 20px;
+        }
+        #step-4 .purchase-button {
+            background-color: var(--color-hot-pink);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        #step-4 .purchase-button:hover {
+            background-color: #b03a6e;
+        }
+        #step-4 .nft-option {
+            background-color: var(--color-baby-blue);
+            color: var(--color-text);
+            border: 1px solid var(--color-baby-blue);
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            text-align: center;
+        }
+        #step-4 .nft-option:hover {
+            background-color: #92bceb;
+        }
+        
+        /* Step 5 Confirmation Styles */
+        #step-5 .order-header {
+            color: var(--color-hot-pink);
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #step-5 .order-info {
+            font-size: 1.1em;
+            margin-top: 15px;
+            text-align: center;
+        }
+        #step-5 .hand-crafted-info {
+            font-style: italic;
+            color: #555;
+            margin: 20px 0;
+            padding: 10px;
+            border-left: 5px solid var(--color-hot-pink);
+            background-color: #f5f5f5;
+            max-width: 400px;
+        }
+
+        /* NFT MODAL STYLES */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .nft-modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            text-align: center;
+        }
+        .nft-modal h3 {
+            color: var(--color-hot-pink);
+            margin-bottom: 20px;
+        }
+        .nft-preview-svg {
+            border: 3px solid var(--color-baby-blue);
+            background-color: black; /* NFT background aesthetic */
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .close-modal-button {
+            background-color: var(--color-hot-pink);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="garment-area">
+            <h2>AI Stylist Suggests:</h2>
+            <svg id="main-garment-svg" width="250" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+                
+                <defs>
+                    <!-- Base color rect, dynamically updated by JS -->
+                    <rect id="color-base" width="100%" height="100%" fill="#CCCCCC" />
+
+                    <!-- A. Single Rib Knit (Simple vertical ribbing) -->
+                    <pattern id="knit-rib" patternUnits="userSpaceOnUse" width="8" height="8">
+                        <use href="#color-base"/>
+                        <path d="M 0 0 L 0 8" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+                    </pattern>
+
+                    <!-- B. Basketweave (Structured square interlocking) -->
+                    <pattern id="knit-basket" patternUnits="userSpaceOnUse" width="10" height="10">
+                        <use href="#color-base"/>
+                        <rect x="0" y="0" width="5" height="5" fill="rgba(0,0,0,0.25)"/>
+                        <rect x="5" y="5" width="5" height="5" fill="rgba(0,0,0,0.25)"/>
+                    </pattern>
+
+                    <!-- C. Crochet Weave (Looped structure - replacing Jacquard) -->
+                    <pattern id="knit-crochet" patternUnits="userSpaceOnUse" width="10" height="10">
+                        <use href="#color-base"/>
+                        <path d="M 0 5 C 2.5 7.5, 7.5 7.5, 10 5" stroke="rgba(0,0,0,0.4)" stroke-width="1.5" fill="none"/>
+                        <path d="M 0 5 C 2.5 2.5, 7.5 2.5, 10 5" stroke="rgba(0,0,0,0.4)" stroke-width="1.5" fill="none"/>
+                    </pattern>
+                </defs>
+                
+                <!-- 1. Halter Top Body Shape -->
+                <polygon id="garment-body" 
+                         points="50,20 150,20 160,70 160,250 100,280 40,250 40,70"
+                         fill="#CCCCCC" stroke="#333" stroke-width="1.5"
+                />
+                
+                <!-- 2. Halter Neckline/Straps -->
+                <path id="garment-straps" 
+                      d="M 50 20 Q 100 0, 150 20 Z" 
+                      fill="#CCCCCC" stroke="#333" stroke-width="1.5"/>
+
+                <!-- 3. Simplified Floral Appliqué (With Outline) -->
+                <g id="garment-applique-container" transform="translate(155, 60) scale(0.6)">
+                    <circle id="applique-center" r="6" fill="#000" stroke="#333" stroke-width="1.5"/>
+                    <circle id="applique-petal1" r="10" cx="0" cy="-12" fill="#000" opacity="0.8" stroke="#333" stroke-width="1.5"/>
+                    <circle id="applique-petal2" r="10" cx="10" cy="-6" fill="#000" opacity="0.8" stroke="#333" stroke-width="1.5"/>
+                    <circle id="applique-petal3" r="10" cx="10" cy="6" fill="#000" opacity="0.8" stroke="#333" stroke-width="1.5"/>
+                    <circle id="applique-petal4" r="10" cx="-10" cy="6" fill="#000" opacity="0.8" stroke="#333" stroke-width="1.5"/>
+                    <circle id="applique-petal5" r="10" cx="-10" cy="-6" fill="#000" opacity="0.8" stroke="#333" stroke-width="1.5"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="config-area">
+            <h1>KOCO Self-Expression Index</h1>
+            
+            <!-- Step 1: Emotional Vibe -->
+            <div id="step-1" class="step-section">
+                <div class="step-header"><span>1.</span> Emotional Vibe Selection</div>
+                <p>Curate the core feeling of your garment. This sets the **Base Garment Color**.</p>
+                <div class="button-group">
+                    <button onclick="selectMood('Joyful', '#FFD700', this)">Joyful</button>
+                    <button onclick="selectMood('Confident', '#BF4079', this)">Confident</button> 
+                    <button onclick="selectMood('Creative', '#A0C4FF', this)">Creative</button>
+                </div>
+                <button id="progression-1" class="progression-button" disabled onclick="showStep(2)">
+                    Proceed to Step 2: Craftsmanship Choice
+                </button>
+            </div>
+
+            <!-- Step 2: Hybridization Choice -->
+            <div id="step-2" class="step-section" style="display: none;">
+                <div class="step-header"><span>2.</span> Times New Hybridisation Choice</div>
+                <p>Select your **Artisanal Premium** to define the technical knit texture.</p>
+                <div class="button-group">
+                    <button onclick="selectPremium(25, 'Single Rib Knit', 'knit-rib', this)">A. Minimal Stitch Detail (+€25)</button>
+                    <button onclick="selectPremium(45, 'Basketweave', 'knit-basket', this)">B. Hilo Oaxaqueño (+€45)</button>
+                    <button onclick="selectPremium(80, 'Crochet Weave', 'knit-crochet', this)">C. Full Bespoke Weave (+€80)</button>
+                </div>
+                <p id="premium-display" style="color: var(--color-baby-blue); margin-top: 15px;">*Premium: None Selected*</p>
+                <button id="progression-2" class="progression-button" disabled onclick="showStep(3)">
+                    Proceed to Step 3: Final Alignment
+                </button>
+            </div>
+
+            <!-- Step 3: Final Alignment -->
+            <div id="step-3" class="step-section" style="display: none;">
+                <div class="step-header"><span>3.</span> Final Alignment & Accent</div>
+                <p>Select the **Accent Thread Color** for the floral appliqué to complete your unique piece.</p>
+                <div class="button-group">
+                    <button onclick="selectAccent('#BF4079', this)">Hot Pink Accent</button>
+                    <button onclick="selectAccent('#A0C4FF', this)">Baby Blue Accent</button>
+                    <button onclick="selectAccent('#FFD700', this)">Yellow Accent</button>
+                </div>
+                
+                <div class="final-summary">
+                    <h3>Your KOCO Creation Aligned.</h3>
+                    <div class="final-price-display" id="final-price">€185.00</div>
+                    <p class="justification">
+                        This price includes the €185 base garment plus your chosen Artisanal Premium,
+                        justifying the value of your Times New Hybridisation.
+                    </p>
+                </div>
+                <button id="progression-3" class="progression-button" disabled onclick="showStep(4)">
+                    View Final Product
+                </button>
+            </div>
+
+            <!-- Step 4: Final Product Display & Purchase -->
+            <div id="step-4" class="step-section" style="display: none;">
+                <div class="step-header"><span>4.</span> Your Final Creation</div>
+                <p>Behold your unique, self-expressed garment, ready to be brought to life!</p>
+                
+                <div class="final-garment-display">
+                    <!-- Final SVG preview is dynamically cloned here -->
+                    <svg id="final-garment-preview" width="250" height="300" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg"></svg>
+                    <div class="final-price-display" id="final-price-step4">€0.00</div>
+                </div>
+
+                <div class="final-actions">
+                    <button class="purchase-button" onclick="showStep(5)">
+                        Purchase Now
+                    </button>
+                    <button class="nft-option" onclick="toggleNftModal(true)">
+                        Mint as NFT (Optional)
+                    </button>
+                    <p class="nft-disclaimer">
+                        Get a digital collectible (NFT) of your unique design, proving its authenticity and digital ownership.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 5: Order Confirmation/Checkout Page -->
+            <div id="step-5" class="step-section" style="display: none;">
+                <div class="step-header"><span>5.</span> Order Confirmed</div>
+                <div class="order-details">
+                    <div class="order-header">Thank you for your Order!</div>
+                    <p class="order-info">
+                        Your unique, hand-crafted KOCO garment is being created just for you.
+                    </p>
+                    <div class="hand-crafted-info">
+                        <strong>Made-Per-Order:</strong> Each piece is meticulously hand-crafted by our artisans. This process ensures the highest quality and exclusivity.
+                        <br><br>
+                        Estimated Delivery Time: <strong>4-6 Weeks</strong>.
+                    </div>
+                    <div class="final-price-display" id="final-price-step5">€0.00</div>
+                    <button class="progression-button" style="max-width: 250px; margin-top: 20px;" onclick="showStep(1); pricePremium=0; selectedPatternId=null; selectedAccentColor='#000'; document.getElementById('garment-body').setAttribute('fill', '#CCCCCC'); document.getElementById('garment-straps').setAttribute('fill', '#CCCCCC');">
+                        Start a New Design
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NFT MODAL -->
+    <div id="nft-modal-overlay" class="modal-overlay" onclick="toggleNftModal(false)">
+        <div class="nft-modal" onclick="event.stopPropagation()">
+            <h3>Digital Collectible NFT Preview</h3>
+            <p>Your unique garment encoded on the blockchain.</p>
+            <!-- NFT preview SVG will be cloned here -->
+            <svg id="nft-preview-svg" class="nft-preview-svg" width="200" height="240" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg"></svg>
+            <p style="font-size: 0.9em; color: #777;">Design ID: <span id="nft-design-id"></span></p>
+            <button class="close-modal-button" onclick="toggleNftModal(false)">Close & Return</button>
+        </div>
+    </div>
+
+    <script>
+        // State Variables
+        let basePrice = 185.00;
+        let pricePremium = 0;
+        let selectedMoodColor = '#CCCCCC'; 
+        let selectedPremiumName = null;
+        let selectedPatternId = null; 
+        let selectedAccentColor = '#000';
+        let currentUserId = 'USER-' + Math.random().toString(36).substring(2, 9).toUpperCase(); // Simple placeholder ID
+
+        // SVG Elements
+        const garmentBody = document.getElementById('garment-body');
+        const garmentStraps = document.getElementById('garment-straps');
+        const garmentAppliqueContainer = document.getElementById('garment-applique-container');
+        
+        // Progression Buttons
+        const progression1 = document.getElementById('progression-1');
+        const progression2 = document.getElementById('progression-2');
+        const progression3 = document.getElementById('progression-3');
+
+        /**
+         * Helper function to apply colors and patterns
+         */
+        function applyGarmentColorAndPattern(color, patternId = null) {
+            const colorBaseRect = document.getElementById('color-base');
+            if (colorBaseRect) {
+                colorBaseRect.setAttribute('fill', color);
+            }
+
+            if (patternId) {
+                garmentBody.setAttribute('fill', `url(#${patternId})`);
+            } else {
+                garmentBody.setAttribute('fill', color);
+            }
+            garmentStraps.setAttribute('fill', color);
+        }
+
+        /**
+         * Step 1: Selects Mood and updates Garment Base Color.
+         */
+        function selectMood(mood, color, button) {
+            selectedMoodColor = color;
+            applyGarmentColorAndPattern(selectedMoodColor, selectedPatternId);
+            
+            progression1.disabled = false;
+            
+            document.querySelectorAll('#step-1 .button-group button').forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+        }
+
+        /**
+         * Step 2: Selects Artisanal Premium AND applies technical texture pattern.
+         */
+        function selectPremium(premium, name, patternId, button) {
+            pricePremium = premium;
+            selectedPremiumName = name;
+            selectedPatternId = patternId; 
+            
+            document.getElementById('premium-display').innerText = `*Premium: ${selectedPremiumName} (${name}) (+€${pricePremium.toFixed(2)})`;
+
+            applyGarmentColorAndPattern(selectedMoodColor, selectedPatternId);
+            
+            progression2.disabled = false;
+            
+            document.querySelectorAll('#step-2 .button-group button').forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+        }
+
+        /**
+         * Step 3: Selects Accent Color and Calculates Final Price.
+         */
+        function selectAccent(color, button) {
+            selectedAccentColor = color;
+            // Critical Visual Output 2: Appliqué Color Change
+            garmentAppliqueContainer.querySelectorAll('circle').forEach(circle => {
+                circle.setAttribute('fill', selectedAccentColor);
+            });
+
+            // Critical Function 3: Final Price Calculation and Display
+            const currentFinalPrice = basePrice + pricePremium;
+            document.getElementById('final-price').innerText = `€${currentFinalPrice.toFixed(2)}`;
+            document.getElementById('final-price-step4').innerText = `€${currentFinalPrice.toFixed(2)}`; // Update for step 4
+            document.getElementById('final-price-step5').innerText = `€${currentFinalPrice.toFixed(2)}`; // Update for step 5
+
+            progression3.disabled = false;
+            
+            document.querySelectorAll('#step-3 .button-group button').forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+        }
+
+        /**
+         * Controls the visibility of the steps.
+         */
+        function showStep(stepNumber) {
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('step-3').style.display = 'none';
+            document.getElementById('step-4').style.display = 'none';
+            document.getElementById('step-5').style.display = 'none';
+            
+            document.getElementById(`step-${stepNumber}`).style.display = 'block';
+            
+            const currentFinalPrice = basePrice + pricePremium;
+
+            if (stepNumber === 3) {
+                document.getElementById('final-price').innerText = `€${currentFinalPrice.toFixed(2)} (Select accent to finalize)`;
+                progression3.disabled = !selectedAccentColor;
+            } else if (stepNumber === 4) {
+                // Clone the SVG for the preview (Step 4)
+                const currentSvg = document.getElementById('main-garment-svg');
+                const finalPreviewContainer = document.getElementById('final-garment-preview');
+                
+                finalPreviewContainer.innerHTML = ''; 
+                finalPreviewContainer.appendChild(currentSvg.querySelector('defs').cloneNode(true));
+                finalPreviewContainer.appendChild(currentSvg.querySelector('#garment-body').cloneNode(true));
+                finalPreviewContainer.appendChild(currentSvg.querySelector('#garment-straps').cloneNode(true));
+                finalPreviewContainer.appendChild(currentSvg.querySelector('#garment-applique-container').cloneNode(true));
+
+                document.getElementById('final-price-step4').innerText = document.getElementById('final-price').innerText;
+            } else if (stepNumber === 5) {
+                // Final confirmation step
+                document.getElementById('final-price-step5').innerText = `Final Charge: €${currentFinalPrice.toFixed(2)}`;
+            }
+        }
+
+        /**
+         * NFT Modal Toggle
+         */
+        function toggleNftModal(show) {
+            const overlay = document.getElementById('nft-modal-overlay');
+            if (show) {
+                // Clone the SVG for the NFT modal preview
+                const currentSvg = document.getElementById('main-garment-svg');
+                const nftPreviewContainer = document.getElementById('nft-preview-svg');
+                
+                nftPreviewContainer.innerHTML = '';
+                nftPreviewContainer.appendChild(currentSvg.querySelector('defs').cloneNode(true));
+                nftPreviewContainer.appendChild(currentSvg.querySelector('#garment-body').cloneNode(true));
+                nftPreviewContainer.appendChild(currentSvg.querySelector('#garment-straps').cloneNode(true));
+                nftPreviewContainer.appendChild(currentSvg.querySelector('#garment-applique-container').cloneNode(true));
+
+                // Add NFT specific info
+                document.getElementById('nft-design-id').textContent = currentUserId + '-' + Math.floor(Date.now() / 1000);
+                
+                overlay.style.display = 'flex';
+            } else {
+                overlay.style.display = 'none';
+            }
+        }
+        
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(1);
+            // Initial appliqué color
+            garmentAppliqueContainer.querySelectorAll('circle').forEach(circle => {
+                circle.setAttribute('fill', selectedAccentColor);
+            });
+        });
+
+    </script>
+</body>
+</html>
